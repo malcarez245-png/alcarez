@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GPT Resource Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #085368;
+    --surface: #0a6278;
+    --card: #0c6e87;
+    --card-hover: #0e7a96;
+    --border: #1a7d96;
+    --border-bright: #2a97b2;
+    --accent: #7ee8ff;
+    --accent2: #a5f3c8;
+    --green: #34d399;
+    --red: #fca5a5;
+    --amber: #fde68a;
+    --text: #f0faff;
+    --muted: #a8d8e8;
+    --faint: #4a8fa3;
+    --radius: 14px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #064d60 0%, #085368 50%, #064055 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    gap: 24px;
+  }
+
+  .logo-group { display: flex; align-items: center; gap: 14px; }
+
+  .logo-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(126,232,255,0.35);
+  }
+
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .logo-text span { color: var(--accent); }
+
+  .header-right { display: flex; align-items: center; gap: 12px; }
+
+  .btn-add {
+    background: #0ea5c9;
+    color: #fff;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 0 0 rgba(14,165,201,0);
+  }
+  .btn-add:hover {
+    background: #0891b2;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(126,232,255,0.3);
+  }
+
+  .search-wrap {
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); pointer-events: none;
+  }
+  #searchInput {
+    background: rgba(4,50,62,0.6);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 14px 9px 38px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    width: 220px;
+    transition: border-color 0.2s, width 0.3s;
+    outline: none;
+  }
+  #searchInput:focus {
+    border-color: var(--accent);
+    width: 260px;
+  }
+  #searchInput::placeholder { color: var(--muted); }
+
+  /* ── HERO ── */
+  .hero {
+    max-width: 1200px;
+    margin: 56px auto 0;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    letter-spacing: -0.03em;
+    color: var(--text);
+    line-height: 1.1;
+  }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin-top: 4px;
+    font-weight: 300;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    max-width: 1200px;
+    margin: 32px auto 0;
+    padding: 0 40px;
+    display: flex;
+    gap: 24px;
+  }
+
+  .stat-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 8px 18px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .stat-pill strong { color: var(--text); font-weight: 600; }
+  .stat-pill .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+  }
+
+  /* ── FILTER TABS ── */
+  .filter-bar {
+    max-width: 1200px;
+    margin: 32px auto 0;
+    padding: 0 40px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--border-bright); color: var(--text); }
+  .filter-btn.active {
+    background: rgba(126,232,255,0.12);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── GRID ── */
+  .grid {
+    max-width: 1200px;
+    margin: 32px auto 80px;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+    animation: fadeUp 0.4s ease both;
+    position: relative;
+  }
+  .card:hover {
+    border-color: var(--border-bright);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(4,40,50,0.5);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-top {
+    padding: 22px 22px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .card-meta { flex: 1; min-width: 0; }
+
+  .card-category {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .card-body {
+    padding: 0 22px 16px;
+    flex: 1;
+  }
+
+  .card-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* tags */
+  .card-tags {
+    padding: 0 22px 16px;
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 9px;
+    font-size: 0.72rem;
+    color: var(--faint);
+    transition: color 0.2s;
+  }
+
+  /* stats row */
+  .card-stats {
+    padding: 12px 22px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .stat-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.82rem; color: var(--muted);
+  }
+  .stat-item svg { flex-shrink: 0; }
+  .stat-item strong { color: var(--text); font-weight: 600; }
+
+  /* vote bar */
+  .vote-bar-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .vote-bar-track {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .vote-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), #10b981);
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  /* action row */
+  .card-actions {
+    padding: 14px 22px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-launch {
+    flex: 1;
+    background: rgba(126,232,255,0.1);
+    border: 1px solid rgba(126,232,255,0.3);
+    color: var(--accent);
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-launch:hover {
+    background: rgba(126,232,255,0.2);
+    border-color: var(--accent);
+    transform: none;
+  }
+
+  .vote-btns { display: flex; gap: 6px; }
+
+  .vote-btn {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+  }
+  .vote-btn:hover { border-color: var(--border-bright); transform: scale(1.1); }
+  .vote-btn.up.active   { background: rgba(52,211,153,0.2); border-color: var(--green);  }
+  .vote-btn.down.active { background: rgba(252,165,165,0.2); border-color: var(--red);   }
+
+  .btn-feedback {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.2s;
+    color: var(--muted);
+  }
+  .btn-feedback:hover { border-color: var(--border-bright); color: var(--amber); }
+
+  /* ── FEEDBACK PANEL ── */
+  .feedback-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    background: var(--surface);
+    border-top: 0px solid var(--border);
+  }
+  .feedback-panel.open {
+    max-height: 220px;
+    border-top: 1px solid var(--border);
+  }
+
+  .feedback-inner { padding: 16px 22px; }
+
+  .feedback-inner label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .feedback-inner textarea {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    resize: none;
+    height: 72px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .feedback-inner textarea:focus { border-color: var(--accent); }
+
+  .feedback-actions {
+    display: flex; justify-content: flex-end; gap: 8px;
+    margin-top: 10px;
+  }
+
+  .btn-cancel-fb {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-cancel-fb:hover { border-color: var(--border-bright); color: var(--text); }
+
+  .btn-submit-fb {
+    background: #0ea5c9;
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-submit-fb:hover { background: #0891b2; }
+
+  /* ── FEEDBACK HISTORY ── */
+  .feedback-list {
+    padding: 0 22px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .feedback-list:empty { display: none; }
+
+  .feedback-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    position: relative;
+  }
+  .feedback-item .fb-meta {
+    font-size: 0.72rem;
+    color: var(--faint);
+    margin-top: 4px;
+  }
+
+  /* ── MODAL (Add GPT) ── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(3,30,38,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border-bright);
+    border-radius: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 520px;
+    animation: slideUp 0.3s ease both;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+  }
+  .modal .modal-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 24px; }
+
+  .form-row { margin-bottom: 16px; }
+  .form-row label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .form-row input, .form-row textarea, .form-row select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-row input:focus, .form-row textarea:focus, .form-row select:focus {
+    border-color: var(--accent);
+  }
+  .form-row select option { background: var(--card); }
+  .form-row textarea { resize: vertical; height: 80px; }
+
+  .form-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--border-bright); color: var(--text); }
+
+  .btn-primary {
+    background: #0ea5c9;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #0891b2; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--card);
+    border: 1px solid var(--border-bright);
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-size: 0.88rem;
+    color: var(--text);
+    z-index: 300;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 32px rgba(4,40,50,0.6);
+    transition: transform 0.35s ease;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast-icon { font-size: 16px; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+  }
+  .empty-state .big { font-size: 3rem; margin-bottom: 16px; }
+  .empty-state h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    header { padding: 0 20px; }
+    .hero, .stats-bar, .filter-bar, .grid { padding: 0 20px; }
+    .grid { grid-template-columns: 1fr; }
+    #searchInput { width: 160px; }
+    #searchInput:focus { width: 180px; }
+    .form-cols { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-icon">🤖</div>
+      <div class="logo-text">GPT <span>Resource Center</span></div>
+    </div>
+    <div class="header-right">
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="searchInput" type="text" placeholder="Search agents…" oninput="filterCards()" />
+      </div>
+      <button class="btn-add" onclick="openModal()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Add GPT
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Internal AI Toolkit</div>
+  <h1>Discover &amp; Evaluate<br>AI Agents</h1>
+  <p>Browse, try, and rate GPT agents built for your team. Your feedback shapes which tools we invest in.</p>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat-pill"><span class="dot"></span> <strong id="statTotal">0</strong> agents</div>
+  <div class="stat-pill">👍 <strong id="statVotes">0</strong> total votes</div>
+  <div class="stat-pill">🔗 <strong id="statClicks">0</strong> total clicks</div>
+</div>
+
+<!-- FILTER TABS -->
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+</div>
+
+<!-- GRID -->
+<div class="grid" id="cardGrid"></div>
+
+<!-- ADD GPT MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalIfOutside(event)">
+  <div class="modal">
+    <h2>Add a GPT Agent</h2>
+    <p class="modal-sub">Share a new AI agent with your colleagues.</p>
+    <div class="form-cols">
+      <div class="form-row">
+        <label>Name *</label>
+        <input id="f-name" type="text" placeholder="e.g. Support Triage Bot" />
+      </div>
+      <div class="form-row">
+        <label>Category *</label>
+        <select id="f-cat">
+          <option value="">Select…</option>
+          <option>Customer Support</option>
+          <option>Sales</option>
+          <option>HR & People</option>
+          <option>Engineering</option>
+          <option>Marketing</option>
+          <option>Operations</option>
+          <option>Finance</option>
+          <option>Legal</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Description *</label>
+      <textarea id="f-desc" placeholder="What does this agent do? Who is it for?"></textarea>
+    </div>
+    <div class="form-row">
+      <label>Agent URL *</label>
+      <input id="f-url" type="url" placeholder="https://chat.openai.com/g/…" />
+    </div>
+    <div class="form-cols">
+      <div class="form-row">
+        <label>Icon (emoji)</label>
+        <input id="f-icon" type="text" placeholder="🤖" maxlength="4" />
+      </div>
+      <div class="form-row">
+        <label>Tags (comma-separated)</label>
+        <input id="f-tags" type="text" placeholder="support, triage, email" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="addGPT()">Add Agent →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon">✓</span><span id="toastMsg"></span></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  STORAGE HELPERS (uses window.storage if available,
+//  otherwise falls back to in-memory)
+// ═══════════════════════════════════════════════════════
+const mem = {};
+const store = {
+  async get(k) {
+    if (window.storage) {
+      try { const r = await window.storage.get(k); return r ? JSON.parse(r.value) : null; }
+      catch { return null; }
+    }
+    return mem[k] ?? null;
+  },
+  async set(k, v) {
+    if (window.storage) {
+      try { await window.storage.set(k, JSON.stringify(v)); } catch {}
+    } else { mem[k] = v; }
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+//  DEFAULT SAMPLE AGENTS
+// ═══════════════════════════════════════════════════════
+const DEFAULT_AGENTS = [
+  {
+    id: 'gpt-001',
+    name: 'Support Triage Bot',
+    category: 'Customer Support',
+    desc: 'Automatically classifies incoming support tickets by urgency and department, drafts initial responses, and suggests knowledge base articles for common issues.',
+    url: 'https://chatgpt.com',
+    icon: '🎯',
+    tags: ['triage', 'tickets', 'automation'],
+    added: Date.now() - 86400000 * 5
+  },
+  {
+    id: 'gpt-002',
+    name: 'Sales Proposal Writer',
+    category: 'Sales',
+    desc: 'Generates personalized sales proposals and executive summaries from deal notes. Adapts tone and detail level based on prospect size and industry.',
+    url: 'https://chatgpt.com',
+    icon: '💼',
+    tags: ['proposals', 'outreach', 'crm'],
+    added: Date.now() - 86400000 * 3
+  },
+  {
+    id: 'gpt-003',
+    name: 'HR Policy Advisor',
+    category: 'HR & People',
+    desc: 'Answers employee questions about company policies, benefits, and procedures. Surfaces the right handbook section and escalates complex cases to HR.',
+    url: 'https://chatgpt.com',
+    icon: '👥',
+    tags: ['policy', 'benefits', 'onboarding'],
+    added: Date.now() - 86400000 * 1
+  }
+];
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let agents    = [];   // [{id, name, category, desc, url, icon, tags, added}]
+let stats     = {};   // {[id]: {clicks, up, down, feedback:[{text,ts}], myVote}}
+let activeFilter = 'all';
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+async function init() {
+  agents = (await store.get('grc-agents')) ?? DEFAULT_AGENTS;
+  if (!await store.get('grc-agents')) await store.set('grc-agents', agents); // persist defaults
+
+  for (const a of agents) {
+    const s = await store.get('grc-stats-' + a.id);
+    stats[a.id] = s ?? { clicks: 0, up: 0, down: 0, feedback: [], myVote: null };
+  }
+
+  buildFilters();
+  renderAll();
+  updateGlobalStats();
+}
+
+// ═══════════════════════════════════════════════════════
+//  FILTERS
+// ═══════════════════════════════════════════════════════
+function buildFilters() {
+  const bar = document.getElementById('filterBar');
+  const cats = ['All', ...new Set(agents.map(a => a.category))];
+  bar.innerHTML = '';
+  cats.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (c.toLowerCase() === activeFilter || (c === 'All' && activeFilter === 'all') ? ' active' : '');
+    btn.textContent = c;
+    btn.onclick = () => setFilter(c === 'All' ? 'all' : c, btn);
+    bar.appendChild(btn);
+  });
+}
+
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════
+function filterCards() {
+  renderAll();
+}
+
+function renderAll() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const grid = document.getElementById('cardGrid');
+  grid.innerHTML = '';
+
+  let filtered = agents.filter(a => {
+    const matchCat = activeFilter === 'all' || a.category === activeFilter;
+    const matchQ   = !query || a.name.toLowerCase().includes(query) || a.desc.toLowerCase().includes(query) || a.tags.some(t => t.toLowerCase().includes(query));
+    return matchCat && matchQ;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="big">🔍</div><h3>No agents found</h3><p>Try adjusting your search or filter, or add a new agent.</p></div>`;
+    return;
+  }
+
+  filtered.forEach((a, i) => {
+    const el = buildCard(a, i);
+    grid.appendChild(el);
+  });
+}
+
+const ICON_COLORS = [
+  ['#1e3a8a','#3b82f6'], ['#14532d','#34d399'], ['#581c87','#a78bfa'],
+  ['#7c2d12','#f97316'], ['#0c4a6e','#38bdf8'], ['#831843','#f472b6'],
+  ['#1e3a5f','#60a5fa'], ['#3b0764','#c084fc']
+];
+
+function buildCard(a, i) {
+  const s = stats[a.id] ?? { clicks: 0, up: 0, down: 0, feedback: [], myVote: null };
+  const total = s.up + s.down;
+  const pct   = total > 0 ? Math.round((s.up / total) * 100) : 0;
+  const colorIdx = Math.abs([...a.id].reduce((n,c) => n + c.charCodeAt(0), 0)) % ICON_COLORS.length;
+  const [bg, fg] = ICON_COLORS[colorIdx];
+
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.style.animationDelay = (i * 0.06) + 's';
+  div.dataset.id = a.id;
+
+  const tagsHtml = (a.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+
+  const fbHtml = (s.feedback || []).slice(-3).reverse().map(f =>
+    `<div class="feedback-item">${escHtml(f.text)}<div class="fb-meta">${new Date(f.ts).toLocaleDateString()}</div></div>`
+  ).join('');
+
+  div.innerHTML = `
+    <div class="card-top">
+      <div class="card-icon" style="background:${bg}20;border:1.5px solid ${bg}50;font-size:22px;width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;">${a.icon || '🤖'}</div>
+      <div class="card-meta">
+        <div class="card-category">${a.category}</div>
+        <div class="card-title">${escHtml(a.name)}</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">${escHtml(a.desc)}</div>
+    </div>
+    ${tagsHtml ? `<div class="card-tags">${tagsHtml}</div>` : ''}
+    <div class="card-stats">
+      <div class="stat-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/></svg>
+        <strong>${s.clicks}</strong>&nbsp;opens
+      </div>
+      <div class="stat-item">💬 <strong>${(s.feedback||[]).length}</strong>&nbsp;reviews</div>
+      <div class="vote-bar-wrap">
+        <span>${pct}%</span>
+        <div class="vote-bar-track"><div class="vote-bar-fill" style="width:${pct}%"></div></div>
+        <span>${total} vote${total !== 1 ? 's' : ''}</span>
+      </div>
+    </div>
+    <div class="card-actions">
+      <a class="btn-launch" href="${escAttr(a.url)}" target="_blank" rel="noopener" onclick="trackClick('${a.id}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Open Agent
+      </a>
+      <div class="vote-btns">
+        <button class="vote-btn up${s.myVote === 'up' ? ' active' : ''}" onclick="vote('${a.id}','up')" title="Helpful">👍</button>
+        <button class="vote-btn down${s.myVote === 'down' ? ' active' : ''}" onclick="vote('${a.id}','down')" title="Not helpful">👎</button>
+        <button class="btn-feedback" onclick="toggleFeedback('${a.id}')" title="Leave a review">💬</button>
+      </div>
+    </div>
+    <div class="feedback-panel" id="fp-${a.id}">
+      <div class="feedback-inner">
+        <label>Share your experience with this agent:</label>
+        <textarea id="ft-${a.id}" placeholder="What did you like or dislike? Was it accurate and useful?" rows="3"></textarea>
+        <div class="feedback-actions">
+          <button class="btn-cancel-fb" onclick="toggleFeedback('${a.id}')">Cancel</button>
+          <button class="btn-submit-fb" onclick="submitFeedback('${a.id}')">Submit Review</button>
+        </div>
+      </div>
+    </div>
+    ${fbHtml ? `<div class="feedback-list">${fbHtml}</div>` : ''}
+  `;
+  return div;
+}
+
+// ═══════════════════════════════════════════════════════
+//  ACTIONS
+// ═══════════════════════════════════════════════════════
+async function trackClick(id) {
+  const s = getStats(id);
+  s.clicks++;
+  await saveStats(id, s);
+  // Update in DOM without re-render
+  const card = document.querySelector(`[data-id="${id}"]`);
+  if (card) {
+    const clickEl = card.querySelector('.stat-item strong');
+    if (clickEl) clickEl.textContent = s.clicks;
+  }
+  updateGlobalStats();
+}
+
+async function vote(id, dir) {
+  const s = getStats(id);
+  if (s.myVote === dir) {
+    // undo vote
+    s[dir]--;
+    s.myVote = null;
+  } else {
+    if (s.myVote) s[s.myVote]--; // remove old vote
+    s[dir]++;
+    s.myVote = dir;
+  }
+  await saveStats(id, s);
+  // refresh just this card
+  refreshCard(id);
+  updateGlobalStats();
+  showToast(dir === 'up' ? '👍 Thanks for the thumbs up!' : '👎 Feedback noted, thanks!');
+}
+
+function toggleFeedback(id) {
+  const panel = document.getElementById('fp-' + id);
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    setTimeout(() => document.getElementById('ft-' + id)?.focus(), 350);
+  }
+}
+
+async function submitFeedback(id) {
+  const ta = document.getElementById('ft-' + id);
+  const text = ta.value.trim();
+  if (!text) { showToast('✏️ Please write something first!', true); return; }
+  const s = getStats(id);
+  s.feedback = s.feedback || [];
+  s.feedback.push({ text, ts: Date.now() });
+  await saveStats(id, s);
+  ta.value = '';
+  toggleFeedback(id);
+  refreshCard(id);
+  showToast('💬 Review submitted — thank you!');
+}
+
+// ═══════════════════════════════════════════════════════
+//  ADD GPT
+// ═══════════════════════════════════════════════════════
+function openModal()  { document.getElementById('modalOverlay').classList.add('open'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+function closeModalIfOutside(e) { if (e.target.id === 'modalOverlay') closeModal(); }
+
+async function addGPT() {
+  const name = document.getElementById('f-name').value.trim();
+  const cat  = document.getElementById('f-cat').value;
+  const desc = document.getElementById('f-desc').value.trim();
+  const url  = document.getElementById('f-url').value.trim();
+  const icon = document.getElementById('f-icon').value.trim() || '🤖';
+  const tagsRaw = document.getElementById('f-tags').value.trim();
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+
+  if (!name || !cat || !desc || !url) { showToast('⚠️ Please fill in all required fields.', true); return; }
+  try { new URL(url); } catch { showToast('⚠️ Please enter a valid URL.', true); return; }
+
+  const id = 'gpt-' + Date.now();
+  const agent = { id, name, category: cat, desc, url, icon, tags, added: Date.now() };
+  agents.push(agent);
+  stats[id] = { clicks: 0, up: 0, down: 0, feedback: [], myVote: null };
+
+  await store.set('grc-agents', agents);
+  await saveStats(id, stats[id]);
+
+  closeModal();
+  clearModal();
+  buildFilters();
+  renderAll();
+  updateGlobalStats();
+  showToast('✅ Agent added successfully!');
+}
+
+function clearModal() {
+  ['f-name','f-cat','f-desc','f-url','f-icon','f-tags'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+function getStats(id) {
+  if (!stats[id]) stats[id] = { clicks: 0, up: 0, down: 0, feedback: [], myVote: null };
+  return stats[id];
+}
+
+async function saveStats(id, s) {
+  stats[id] = s;
+  await store.set('grc-stats-' + id, s);
+}
+
+function refreshCard(id) {
+  const agent = agents.find(a => a.id === id);
+  if (!agent) return;
+  const grid = document.getElementById('cardGrid');
+  const old  = grid.querySelector(`[data-id="${id}"]`);
+  if (!old) return;
+  const idx  = Array.from(grid.children).indexOf(old);
+  const newCard = buildCard(agent, idx);
+  old.replaceWith(newCard);
+}
+
+function updateGlobalStats() {
+  const totalClicks = Object.values(stats).reduce((n, s) => n + (s.clicks || 0), 0);
+  const totalVotes  = Object.values(stats).reduce((n, s) => n + (s.up || 0) + (s.down || 0), 0);
+  document.getElementById('statTotal').textContent  = agents.length;
+  document.getElementById('statVotes').textContent  = totalVotes;
+  document.getElementById('statClicks').textContent = totalClicks;
+}
+
+let toastTimer;
+function showToast(msg, isWarn = false) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) { return String(s).replace(/"/g, '%22'); }
+
+// ═══════════════════════════════════════════════════════
+//  KEYBOARD ESC
+// ═══════════════════════════════════════════════════════
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ═══════════════════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════════════════
+init();
+</script>
+</body>
+</html>
