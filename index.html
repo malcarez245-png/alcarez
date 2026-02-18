@@ -414,6 +414,20 @@
   }
   .btn-feedback:hover { border-color: var(--border-bright); color: var(--amber); }
 
+  .btn-edit, .btn-delete {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.2s;
+    color: var(--muted);
+  }
+  .btn-edit:hover { border-color: var(--border-bright); color: var(--accent); }
+  .btn-delete:hover { border-color: var(--red); color: var(--red); }
+
   /* ── FEEDBACK PANEL ── */
   .feedback-panel {
     max-height: 0;
@@ -745,6 +759,58 @@
 <!-- TOAST -->
 <div class="toast" id="toast"><span class="toast-icon" id="toastIcon">✓</span><span id="toastMsg"></span></div>
 
+<!-- EDIT GPT MODAL -->
+<div class="modal-overlay" id="editModalOverlay" onclick="closeEditModalIfOutside(event)">
+  <div class="modal">
+    <h2>Edit Agent</h2>
+    <p class="modal-sub">Update the details for this agent.</p>
+    <input type="hidden" id="e-id" />
+    <div class="form-cols">
+      <div class="form-row">
+        <label>Name *</label>
+        <input id="e-name" type="text" placeholder="e.g. Support Triage Bot" />
+      </div>
+      <div class="form-row">
+        <label>Category *</label>
+        <select id="e-cat">
+          <option value="">Select…</option>
+          <option>Customer Support</option>
+          <option>Sales</option>
+          <option>HR & People</option>
+          <option>Engineering</option>
+          <option>Marketing</option>
+          <option>Operations</option>
+          <option>Finance</option>
+          <option>Legal</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Description *</label>
+      <textarea id="e-desc" placeholder="What does this agent do? Who is it for?"></textarea>
+    </div>
+    <div class="form-row">
+      <label>Agent URL *</label>
+      <input id="e-url" type="url" placeholder="https://chat.openai.com/g/…" />
+    </div>
+    <div class="form-cols">
+      <div class="form-row">
+        <label>Icon (emoji)</label>
+        <input id="e-icon" type="text" placeholder="🤖" maxlength="4" />
+      </div>
+      <div class="form-row">
+        <label>Tags (comma-separated)</label>
+        <input id="e-tags" type="text" placeholder="support, triage, email" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveEdit()">Save Changes →</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════════════
 //  STORAGE HELPERS (uses window.storage if available,
@@ -763,6 +829,11 @@ const store = {
     if (window.storage) {
       try { await window.storage.set(k, JSON.stringify(v)); } catch {}
     } else { mem[k] = v; }
+  },
+  async delete(k) {
+    if (window.storage) {
+      try { await window.storage.delete(k); } catch {}
+    } else { delete mem[k]; }
   }
 };
 
@@ -935,6 +1006,8 @@ function buildCard(a, i) {
         <button class="vote-btn up${s.myVote === 'up' ? ' active' : ''}" onclick="vote('${a.id}','up')" title="Helpful">👍</button>
         <button class="vote-btn down${s.myVote === 'down' ? ' active' : ''}" onclick="vote('${a.id}','down')" title="Not helpful">👎</button>
         <button class="btn-feedback" onclick="toggleFeedback('${a.id}')" title="Leave a review">💬</button>
+        <button class="btn-edit" onclick="openEditModal('${a.id}')" title="Edit agent">✏️</button>
+        <button class="btn-delete" onclick="deleteAgent('${a.id}')" title="Delete agent">🗑️</button>
       </div>
     </div>
     <div class="feedback-panel" id="fp-${a.id}">
@@ -1051,6 +1124,95 @@ function clearModal() {
 }
 
 // ═══════════════════════════════════════════════════════
+//  EDIT GPT
+// ═══════════════════════════════════════════════════════
+function openEditModal(id) {
+  const agent = agents.find(a => a.id === id);
+  if (!agent) return;
+  
+  document.getElementById('e-id').value = id;
+  document.getElementById('e-name').value = agent.name;
+  document.getElementById('e-cat').value = agent.category;
+  document.getElementById('e-desc').value = agent.desc;
+  document.getElementById('e-url').value = agent.url;
+  document.getElementById('e-icon').value = agent.icon || '🤖';
+  document.getElementById('e-tags').value = (agent.tags || []).join(', ');
+  
+  document.getElementById('editModalOverlay').classList.add('open');
+}
+
+function closeEditModal() {
+  document.getElementById('editModalOverlay').classList.remove('open');
+}
+
+function closeEditModalIfOutside(e) {
+  if (e.target.id === 'editModalOverlay') closeEditModal();
+}
+
+async function saveEdit() {
+  const id = document.getElementById('e-id').value;
+  const name = document.getElementById('e-name').value.trim();
+  const cat = document.getElementById('e-cat').value;
+  const desc = document.getElementById('e-desc').value.trim();
+  const url = document.getElementById('e-url').value.trim();
+  const icon = document.getElementById('e-icon').value.trim() || '🤖';
+  const tagsRaw = document.getElementById('e-tags').value.trim();
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+
+  if (!name || !cat || !desc || !url) {
+    showToast('⚠️ Please fill in all required fields.', true);
+    return;
+  }
+  
+  try { new URL(url); } catch {
+    showToast('⚠️ Please enter a valid URL.', true);
+    return;
+  }
+
+  const agent = agents.find(a => a.id === id);
+  if (!agent) return;
+
+  agent.name = name;
+  agent.category = cat;
+  agent.desc = desc;
+  agent.url = url;
+  agent.icon = icon;
+  agent.tags = tags;
+
+  await store.set('grc-agents', agents);
+  
+  closeEditModal();
+  buildFilters();
+  renderAll();
+  showToast('✅ Agent updated successfully!');
+}
+
+// ═══════════════════════════════════════════════════════
+//  DELETE GPT
+// ═══════════════════════════════════════════════════════
+async function deleteAgent(id) {
+  const agent = agents.find(a => a.id === id);
+  if (!agent) return;
+  
+  if (!confirm(`Are you sure you want to delete "${agent.name}"? This cannot be undone.`)) {
+    return;
+  }
+  
+  // Remove from agents array
+  agents = agents.filter(a => a.id !== id);
+  await store.set('grc-agents', agents);
+  
+  // Delete stats
+  delete stats[id];
+  await store.delete('grc-stats-' + id);
+  
+  buildFilters();
+  renderAll();
+  updateGlobalStats();
+  showToast('🗑️ Agent deleted successfully');
+}
+
+// ═══════════════════════════════════════════════════════
 //  HELPERS
 // ═══════════════════════════════════════════════════════
 function getStats(id) {
@@ -1099,7 +1261,12 @@ function escAttr(s) { return String(s).replace(/"/g, '%22'); }
 // ═══════════════════════════════════════════════════════
 //  KEYBOARD ESC
 // ═══════════════════════════════════════════════════════
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal();
+    closeEditModal();
+  }
+});
 
 // ═══════════════════════════════════════════════════════
 //  BOOT
